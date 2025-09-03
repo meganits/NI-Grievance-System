@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  fullname  String
+  email     String   @unique
+  password  String
+  role      Role     @default(CITIZEN)
+  wardId    Int?
+  ward      Ward?    @relation(fields: [wardId], references: [id])
+  tickets   Ticket[] @relation("TicketCreatedBy")
+  assignedTickets Ticket[] @relation("TicketAssignedTo")
+  comments  Comment[]
+
+  @@map("users")
+}
+
+model Ward {
+  id      Int      @id @default(autoincrement())
+  code    String   @unique
+  name_np String
+  name_eng String
+  tickets Ticket[]
+  users   User[]
+
+  @@map("wards")
+}
+
+model Category {
+  id       Int      @id @default(autoincrement())
+  code     String   @unique
+  name_np  String
+  name_eng String
+  is_active Boolean  @default(true)
+  tickets  Ticket[]
+
+  @@map("categories")
+}
+
+model Ticket {
+  id           String     @id @default(uuid())
+  code         String     @unique
+  title        String
+  description  String
+  status       TicketStatus @default(NEW)
+  categoryId   Int
+  category     Category   @relation(fields: [categoryId], references: [id])
+  wardId       Int
+  ward         Ward       @relation(fields: [wardId], references: [id])
+  createdById  String
+  createdBy    User       @relation("TicketCreatedBy", fields: [createdById], references: [id])
+  assignedToId String?
+  assignedTo   User?      @relation("TicketAssignedTo", fields: [assignedToId], references: [id])
+  comments     Comment[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  closedAt     DateTime?
+
+  @@map("tickets")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  body      String
+  ticketId  String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@map("comments")
+}
+
+enum Role {
+  CITIZEN
+  STAFF
+  ADMIN
+}
+
+enum TicketStatus {
+  NEW
+  ACKNOWLEDGED
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  REOPENED
+}
