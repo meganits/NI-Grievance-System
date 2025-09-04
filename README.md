@@ -36,6 +36,27 @@ I have successfully completed the D1 - Schema & Contracts milestone. The project
 - Easy transition to PostgreSQL via environment variable change
 - Follows OpenAPI 3.1 specification exactly
 
+## 🚀 Progress - D2 Complete
+
+### Implemented Features (D2 - Core APIs)
+- **✅ Authentication System**: JWT-based login (`POST /auth/login`)
+- **✅ Categories API**: List all active categories (`GET /categories`)  
+- **✅ Wards API**: List all municipal wards (`GET /wards`)
+- **✅ Database**: PostgreSQL with Prisma ORM + Seed data
+- **✅ Response Format**: Standardized envelope format for all responses
+
+### Technical Environment
+- **Database**: PostgreSQL (Production) / SQLite (Development)
+- **Authentication**: JWT with bcrypt password hashing
+- **API Documentation**: OpenAPI 3.1 compliant
+
+### Testing the API
+
+**1. Login Authentication:**
+```bash
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
 ---
 
 <p align="center">
