@@ -36,6 +36,7 @@ I have successfully completed the D1 - Schema & Contracts milestone. The project
 - Easy transition to PostgreSQL via environment variable change
 - Follows OpenAPI 3.1 specification exactly
 
+## ############################################################################################################
 ## 🚀 Progress - D2 Complete
 
 ### Implemented Features (D2 - Core APIs)
@@ -49,6 +50,52 @@ I have successfully completed the D1 - Schema & Contracts milestone. The project
 - **Database**: PostgreSQL (Production) / SQLite (Development)
 - **Authentication**: JWT with bcrypt password hashing
 - **API Documentation**: OpenAPI 3.1 compliant
+
+## ############################################################################################################
+
+## 🚀 Progress - D3 Complete
+
+### Implemented Features (D3 - Staff Workflows)
+
+**✅ Ticket Management System:** Citizens can create tickets (`POST /tickets`) with automatic ticket code generation (`GNS-2025-XXXXX`)
+
+**✅ Role-Based Access Control:**
+- **Citizens:** Can only view/manage their own tickets
+- **Staff/Admin:** Can view all tickets, assign tickets, update statuses
+
+**✅ Ticket Operations:**
+- List tickets with filtering (`GET /tickets?status=NEW&wardId=1`)
+- Get specific ticket details (`GET /tickets/:id`)
+- Update ticket assignment/status (`PATCH /tickets/:id`) - Staff/Admin only
+
+**✅ Comments System:**
+- Add comments to tickets (`POST /tickets/:id/comments`)
+- View ticket comments (`GET /tickets/:id/comments`)
+- Citizens can only comment on their own tickets
+
+**✅ Advanced Filtering:** Staff/Admin can filter tickets by status, ward, category
+
+### Technical Implementation
+
+**🔐 Authentication:** JWT with role-based guards (`JwtAuthGuard`, `RolesGuard`)
+
+**🎯 Authorization:** Custom `@Roles()` decorator for endpoint protection
+
+**📦 DTO Validation:** Comprehensive validation pipes for all requests
+
+**🔗 Database Relations:** Proper Prisma relations (User-Ticket-Comment-Ward-Category)
+
+**🚦 HTTP Status Codes:** Proper error handling with appropriate status codes
+
+### Security Features
+
+- Citizens cannot access other users' tickets/comments
+- Only Staff/Admin can assign tickets or change statuses
+- Automatic ownership validation on all operations
+- SQL injection prevention through Prisma parameterization
+
+
+## ############################################################################################################
 
 ### Testing the API
 
